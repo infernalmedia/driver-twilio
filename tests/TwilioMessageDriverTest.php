@@ -4,7 +4,7 @@ namespace Tests;
 
 use Mockery as m;
 use Twilio\Rest\Client;
-use Twilio\Twiml;
+use Twilio\TwiML\MessagingResponse;
 use BotMan\BotMan\Http\Curl;
 use PHPUnit_Framework_TestCase;
 use BotMan\BotMan\Messages\Attachments\Image;
@@ -23,13 +23,14 @@ class TwilioMessageDriverTest extends PHPUnit_Framework_TestCase
         $request = Request::create('', 'POST', $parameters, [], [], [
             'Content-Type' => 'application/x-ww-form-urlencoded',
         ]);
-        $request->headers->set('X-Twilio-Signature', 'Lo3nfTHrzZ2sr2daOkmKFA9Ce0w=');
+        $request->headers->set('X-Twilio-Signature', 'WyyunabY4p/b+zeaeDiObGiGn8A=');
         if ($htmlInterface === null) {
             $htmlInterface = m::mock(Curl::class);
         }
 
         return new TwilioMessageDriver($request, [
             'twilio' => [
+                'token' => '12345',
                 'fromNumber' => 'My-From-Number'
             ]
         ], $htmlInterface);
@@ -79,7 +80,7 @@ class TwilioMessageDriverTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_matches_the_request()
     {
-        $driver = $this->getDriver();
+//        $driver = $this->getDriver();
 //        $this->assertFalse($driver->matchesRequest());
 
         $driver = $this->getValidDriver();
@@ -255,8 +256,8 @@ class TwilioMessageDriverTest extends PHPUnit_Framework_TestCase
     {
         $driver = $this->getValidDriver();
 
-        $twiml = new Twiml();
-        $message = $twiml->message();
+        $twiml = new MessagingResponse();
+        $message = $twiml->message('');
         $message->body('custom twiml');
 
         $payload = $driver->buildServicePayload($twiml, new IncomingMessage('', '123', '456'), []);
@@ -264,6 +265,8 @@ class TwilioMessageDriverTest extends PHPUnit_Framework_TestCase
         /** @var Response $response */
         $response = $driver->sendPayload($payload);
         $expected = '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL.'<Response><Message><Body>custom twiml</Body></Message></Response>'.PHP_EOL;
+
+
         $this->assertSame($expected, $response->getContent());
     }
 

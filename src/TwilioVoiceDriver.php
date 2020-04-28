@@ -2,7 +2,7 @@
 
 namespace BotMan\Drivers\Twilio;
 
-use Twilio\Twiml;
+use Twilio\TwiML\VoiceResponse;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Drivers\Events\GenericEvent;
@@ -85,7 +85,7 @@ class TwilioVoiceDriver extends TwilioDriver
             $text = $message->getText();
             $isQuestion = true;
             $parameters['buttons'] = $message->getButtons() ?? [];
-        } elseif ($message instanceof Twiml) {
+        } elseif ($message instanceof VoiceResponse) {
             $parameters['twiml'] = $message;
         } elseif ($message instanceof OutgoingMessage) {
             $text = $message->getText();
@@ -120,7 +120,7 @@ class TwilioVoiceDriver extends TwilioDriver
             $sayParameters['language'] = $payload['language'];
         }
 
-        $response = new Twiml();
+        $response = new VoiceResponse();
         if ($payload['question'] === true) {
             $input = $payload['input'] ?? $this->config->get('input', TwilioSettings::INPUT_DTMF);
             $gather = $response->gather(['input' => $input]);

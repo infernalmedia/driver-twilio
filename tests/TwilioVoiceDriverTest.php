@@ -3,7 +3,7 @@
 namespace Tests;
 
 use Mockery as m;
-use Twilio\Twiml;
+use Twilio\TwiML\VoiceResponse;
 use BotMan\BotMan\Http\Curl;
 use PHPUnit_Framework_TestCase;
 use BotMan\Drivers\Twilio\TwilioVoiceDriver;
@@ -21,12 +21,16 @@ class TwilioVoiceDriverTest extends PHPUnit_Framework_TestCase
         $request = Request::create('', 'POST', $parameters, [], [], [
             'Content-Type' => 'application/x-ww-form-urlencoded',
         ]);
-        $request->headers->set('X-Twilio-Signature', '+vqR5LqFQepeHnZIFIuq4jID2ws=');
+        $request->headers->set('X-Twilio-Signature', 'PHROMOUL2hHIKx89kQ1VFRXz+ko=');
         if ($htmlInterface === null) {
             $htmlInterface = m::mock(Curl::class);
         }
 
-        return new TwilioVoiceDriver($request, [], $htmlInterface);
+        return new TwilioVoiceDriver($request, [
+            'twilio' => [
+                'token' => '12345'
+            ]
+        ], $htmlInterface);
     }
 
     private function getValidDriver($withDigits = true, $htmlInterface = null)
@@ -216,7 +220,7 @@ class TwilioVoiceDriverTest extends PHPUnit_Framework_TestCase
     {
         $driver = $this->getValidDriver();
 
-        $twiml = new Twiml();
+        $twiml = new VoiceResponse();
         $twiml->say('custom twiml');
 
         $payload = $driver->buildServicePayload($twiml, new IncomingMessage('', '', ''), []);

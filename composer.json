@@ -15,9 +15,9 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.1",
         "botman/botman": "~2.0",
-        "twilio/sdk": "^5.15"
+        "twilio/sdk": "^6.3"
     },
     "require-dev": {
         "botman/studio-addons": "~1.0",
