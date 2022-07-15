@@ -23,7 +23,8 @@ class TwilioMessageDriver extends TwilioDriver
      */
     public function matchesRequest()
     {
-        return $this->event->has('MessageSid') && $this->isSignatureValid();
+        $noAttachments = !$this->event->has('NumMedia') || intval($this->event->get('NumMedia')) === 0;
+        return $noAttachments && $this->event->has('MessageSid') && $this->isSignatureValid();
     }
 
     /**

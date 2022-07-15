@@ -4,6 +4,7 @@
     ],
     "botman/driver": [
         "BotMan\\Drivers\\Twilio\\TwilioVoiceDriver",
-        "BotMan\\Drivers\\Twilio\\TwilioMessageDriver"
+        "BotMan\\Drivers\\Twilio\\TwilioMessageDriver",
+        "BotMan\\Drivers\\Twilio\\TwilioImageDriver"
     ]
 }
