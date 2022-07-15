@@ -2,11 +2,12 @@
 
 namespace BotMan\Drivers\Twilio\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use BotMan\BotMan\Drivers\DriverManager;
-use BotMan\Drivers\Twilio\TwilioVoiceDriver;
+use BotMan\Drivers\Twilio\TwilioImageDriver;
 use BotMan\Drivers\Twilio\TwilioMessageDriver;
+use BotMan\Drivers\Twilio\TwilioVoiceDriver;
 use BotMan\Studio\Providers\StudioServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class TwilioServiceProvider extends ServiceProvider
 {
@@ -35,6 +36,7 @@ class TwilioServiceProvider extends ServiceProvider
     {
         DriverManager::loadDriver(TwilioVoiceDriver::class);
         DriverManager::loadDriver(TwilioMessageDriver::class);
+        DriverManager::loadDriver(TwilioImageDriver::class);
     }
 
     /**
